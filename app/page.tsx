@@ -393,13 +393,14 @@ export default function LandingPage() {
                 Commencer gratuitement
               </Button>
             </Link>
-            <Link href="/admin/register">
+            <Link href="/guide">
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-[#004838] px-8 py-3 bg-transparent"
+                className="border-gray-300 px-8 py-3 bg-transparent"
               >
-                Créer un compte admin
+                <BookOpen className="mr-2 w-5 h-5" />
+                Voir le guide
               </Button>
             </Link>
           </div>

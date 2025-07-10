@@ -192,9 +192,6 @@ export default function ProjectsPage() {
                 <span className="text-gray-600">Retour</span>
               </Link>
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-[#004838] rounded-lg flex items-center justify-center">
-                  <Star className="w-5 h-5 text-white" />
-                </div>
                 <h1 className="text-2xl font-bold text-gray-900">
                   Évaluation des Projets
                 </h1>
