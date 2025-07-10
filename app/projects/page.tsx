@@ -22,6 +22,7 @@ import {
   ArrowLeft,
   Grid,
   List,
+  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
@@ -199,9 +200,9 @@ export default function ProjectsPage() {
                 </h1>
               </div>
             </div>
-            <Link href="/admin/login">
+            {/* <Link href="/admin/login">
               <Button variant="outline">Administration</Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </header>
@@ -311,7 +312,7 @@ export default function ProjectsPage() {
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
             >
-              Précédent
+              <ArrowLeft className="w-4 h-4" />
             </Button>
             {[...Array(totalPages)].map((_, i) => {
               const pageNum = i + 1;
@@ -329,7 +330,7 @@ export default function ProjectsPage() {
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              Suivant
+              <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         )}

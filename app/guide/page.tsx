@@ -477,7 +477,7 @@ export default function GuidePage() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap flex-row gap-4">
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center space-x-2">
                 <ArrowLeft className="w-5 h-5 text-gray-600" />
@@ -605,7 +605,6 @@ export default function GuidePage() {
               className="flex items-center space-x-2"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Précédent</span>
             </Button>
 
             <div className="flex items-center space-x-4">
@@ -636,7 +635,6 @@ export default function GuidePage() {
               disabled={currentStep === steps.length - 1}
               className="flex items-center space-x-2 bg-[#004838] hover:bg-[#073127]"
             >
-              <span>Suivant</span>
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>

@@ -44,11 +44,11 @@ export default function LandingPage() {
             </Link>
           </nav>
           <div className="flex items-center space-x-4">
-            <Link href="/admin/login">
+            {/* <Link href="/admin/login">
               <Button variant="ghost" className="text-gray-600">
                 Se connecter
               </Button>
-            </Link>
+            </Link> */}
             <Link href="/projects">
               <Button className="bg-[#004838] hover:bg-[#073127] text-white">
                 Commencer
