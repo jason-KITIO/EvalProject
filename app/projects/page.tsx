@@ -1,62 +1,44 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import {
-  Star,
-  Search,
-  Filter,
-  Users,
-  MessageCircle,
-  Trophy,
-  ArrowLeft,
-  Grid,
-  List,
-  ArrowRight,
-} from "lucide-react";
-import Link from "next/link";
-import { supabase } from "@/lib/supabase";
-import { useToast } from "@/hooks/use-toast";
-import { VoteSecurityManager } from "@/lib/vote-security";
-import { ProjectRatingDialog } from "@/components/ProjectRatingDialog";
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Star, Search, Filter, Users, MessageCircle, Trophy, ArrowLeft, Grid, List, ArrowRight } from "lucide-react"
+import Link from "next/link"
+import { supabase } from "@/lib/supabase"
+import { useToast } from "@/hooks/use-toast"
+import { VoteSecurityManager } from "@/lib/vote-security"
+import { ProjectRatingDialog } from "@/components/ProjectRatingDialog"
 
 interface Project {
-  id: string;
-  title: string;
-  description: string;
-  field: string;
-  members: string[];
-  average_rating: number;
-  total_votes: number;
-  comments_count: number;
+  id: string
+  title: string
+  description: string
+  field: string
+  members: string[]
+  average_rating: number
+  total_votes: number
+  comments_count: number
 }
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedField, setSelectedField] = useState("all");
-  const [sortBy, setSortBy] = useState("rating");
-  const [loading, setLoading] = useState(true);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const { toast } = useToast();
+  const [projects, setProjects] = useState<Project[]>([])
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedField, setSelectedField] = useState("all")
+  const [sortBy, setSortBy] = useState("rating")
+  const [loading, setLoading] = useState(true)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const { toast } = useToast()
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const projectsPerPage = 9;
+  const [currentPage, setCurrentPage] = useState(1)
+  const projectsPerPage = 9
 
   // Vue : "grid" ou "list"
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
   const fields = [
     { value: "all", label: "Toutes les filières" },
@@ -65,20 +47,20 @@ export default function ProjectsPage() {
     { value: "electronique", label: "Électronique" },
     { value: "mecanique", label: "Mécanique" },
     { value: "gestion", label: "Gestion" },
-  ];
+  ]
 
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    fetchProjects()
+  }, [])
 
   useEffect(() => {
-    filterAndSortProjects();
-  }, [projects, searchTerm, selectedField, sortBy]);
+    filterAndSortProjects()
+  }, [projects, searchTerm, selectedField, sortBy])
 
   // Reset page à 1 quand filteredProjects change
   useEffect(() => {
-    setCurrentPage(1);
-  }, [filteredProjects]);
+    setCurrentPage(1)
+  }, [filteredProjects])
 
   const fetchProjects = async () => {
     try {
@@ -93,9 +75,9 @@ export default function ProjectsPage() {
           comments (
             id
           )
-        `);
+        `)
 
-      if (error) throw error;
+      if (error) throw error
 
       const processedProjects =
         data?.map((project) => ({
@@ -103,71 +85,65 @@ export default function ProjectsPage() {
           average_rating: calculateAverageRating(project.ratings),
           total_votes: project.ratings?.length || 0,
           comments_count: project.comments?.length || 0,
-        })) || [];
+        })) || []
 
-      setProjects(processedProjects);
+      setProjects(processedProjects)
     } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error("Error fetching projects:", error)
       toast({
         title: "Erreur",
         description: "Impossible de charger les projets",
         variant: "destructive",
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const calculateAverageRating = (ratings: any[]) => {
-    if (!ratings || ratings.length === 0) return 0;
-    const sum = ratings.reduce((acc, rating) => acc + rating.overall, 0);
-    return sum / ratings.length;
-  };
+    if (!ratings || ratings.length === 0) return 0
+    const sum = ratings.reduce((acc, rating) => acc + rating.overall, 0)
+    return sum / ratings.length
+  }
 
   const filterAndSortProjects = () => {
     const filtered = projects.filter((project) => {
       const matchesSearch =
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.members.some((member) =>
-          member.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        project.members.some((member) => member.toLowerCase().includes(searchTerm.toLowerCase()))
 
-      const matchesField =
-        selectedField === "all" || project.field === selectedField;
+      const matchesField = selectedField === "all" || project.field === selectedField
 
-      return matchesSearch && matchesField;
-    });
+      return matchesSearch && matchesField
+    })
 
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "rating":
-          return b.average_rating - a.average_rating;
+          return b.average_rating - a.average_rating
         case "votes":
-          return b.total_votes - a.total_votes;
+          return b.total_votes - a.total_votes
         case "name":
-          return a.title.localeCompare(b.title);
+          return a.title.localeCompare(b.title)
         default:
-          return 0;
+          return 0
       }
-    });
+    })
 
-    setFilteredProjects(filtered);
-  };
+    setFilteredProjects(filtered)
+  }
 
   // Pagination calculations
-  const indexOfLastProject = currentPage * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = filteredProjects.slice(
-    indexOfFirstProject,
-    indexOfLastProject
-  );
-  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+  const indexOfLastProject = currentPage * projectsPerPage
+  const indexOfFirstProject = indexOfLastProject - projectsPerPage
+  const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject)
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage)
 
   const goToPage = (page: number) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
-  };
+    if (page < 1 || page > totalPages) return
+    setCurrentPage(page)
+  }
 
   if (loading) {
     return (
@@ -177,7 +153,7 @@ export default function ProjectsPage() {
           <p className="mt-4 text-gray-600">Chargement des projets...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -192,9 +168,7 @@ export default function ProjectsPage() {
                 <span className="text-gray-600">Retour</span>
               </Link>
               <div className="flex items-center space-x-2">
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Évaluation des Projets
-                </h1>
+                <h1 className="text-2xl font-bold text-gray-900">Évaluation des Projets</h1>
               </div>
             </div>
             {/* <Link href="/admin/login">
@@ -270,21 +244,13 @@ export default function ProjectsPage() {
           viewMode === "grid" ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {currentProjects.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  onEvaluate={() => setSelectedProject(project)}
-                />
+                <ProjectCard key={project.id} project={project} onEvaluate={() => setSelectedProject(project)} />
               ))}
             </div>
           ) : (
             <div className="space-y-6">
               {currentProjects.map((project) => (
-                <ProjectListItem
-                  key={project.id}
-                  project={project}
-                  onEvaluate={() => setSelectedProject(project)}
-                />
+                <ProjectListItem key={project.id} project={project} onEvaluate={() => setSelectedProject(project)} />
               ))}
             </div>
           )
@@ -293,26 +259,19 @@ export default function ProjectsPage() {
             <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
               <Search className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              Aucun projet trouvé
-            </h3>
-            <p className="text-gray-600">
-              Essayez de modifier vos critères de recherche
-            </p>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun projet trouvé</h3>
+            <p className="text-gray-600">Essayez de modifier vos critères de recherche</p>
           </div>
         )}
 
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center mt-8 space-x-3">
-            <Button
-              onClick={() => goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
+            <Button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
               <ArrowLeft className="w-4 h-4" />
             </Button>
             {[...Array(totalPages)].map((_, i) => {
-              const pageNum = i + 1;
+              const pageNum = i + 1
               return (
                 <Button
                   key={pageNum}
@@ -321,12 +280,9 @@ export default function ProjectsPage() {
                 >
                   {pageNum}
                 </Button>
-              );
+              )
             })}
-            <Button
-              onClick={() => goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
+            <Button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
@@ -339,32 +295,32 @@ export default function ProjectsPage() {
           project={selectedProject}
           onClose={() => setSelectedProject(null)}
           onSuccess={() => {
-            fetchProjects();
-            setSelectedProject(null);
+            fetchProjects()
+            setSelectedProject(null)
           }}
         />
       )}
     </div>
-  );
+  )
 }
 
 function ProjectCard({
   project,
   onEvaluate,
 }: {
-  project: Project;
-  onEvaluate: () => void;
+  project: Project
+  onEvaluate: () => void
 }) {
   return (
     <div className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow flex flex-col">
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex items-start justify-between">
-          <h2 className="text-lg font-semibold mb-2">{project.title}</h2>
+          <Link href={`/projects/${project.id}`} className="hover:text-[#004838] transition-colors">
+            <h2 className="text-lg font-semibold mb-2 cursor-pointer">{project.title}</h2>
+          </Link>
           <div className="flex items-center gap-2">
             <Star className="w-5 h-5 text-yellow-400" />
-            <span className="font-semibold">
-              {project.average_rating.toFixed(1)}
-            </span>
+            <span className="font-semibold">{project.average_rating.toFixed(1)}</span>
           </div>
         </div>
         <Badge variant="secondary" className="mb-2 w-max">
@@ -379,9 +335,7 @@ function ProjectCard({
       <div className="p-4 border-t flex items-center justify-between text-sm text-gray-600">
         <div className="flex items-center space-x-2">
           <span>({project.total_votes} votes)</span>
-          {project.average_rating > 0 && (
-            <Trophy className="w-5 h-5 text-yellow-500" />
-          )}
+          {project.average_rating > 0 && <Trophy className="w-5 h-5 text-yellow-500" />}
         </div>
         <Button
           className={`${
@@ -392,27 +346,27 @@ function ProjectCard({
           onClick={onEvaluate}
           size="sm"
         >
-          {VoteSecurityManager.hasUserVoted(project.id)
-            ? "Modifier mon vote"
-            : "Évaluer"}
+          {VoteSecurityManager.hasUserVoted(project.id) ? "Modifier mon vote" : "Évaluer"}
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
 function ProjectListItem({
   project,
   onEvaluate,
 }: {
-  project: Project;
-  onEvaluate: () => void;
+  project: Project
+  onEvaluate: () => void
 }) {
   return (
     <div className="bg-white rounded-lg shadow p-6 flex flex-col md:flex-row md:items-center md:justify-between">
       <div className="md:flex-1 flex flex-row justify-between">
         <div>
-          <h2 className="text-xl font-semibold">{project.title}</h2>
+          <Link href={`/projects/${project.id}`} className="hover:text-[#004838] transition-colors">
+            <h2 className="text-xl font-semibold cursor-pointer">{project.title}</h2>
+          </Link>
           <div>
             <Badge variant="secondary" className="mt-2 inline-block">
               {project.field}
@@ -429,17 +383,13 @@ function ProjectListItem({
 
         <div className="flex items-center space-x-1 gap-2">
           <Star className="w-5 h-5 text-yellow-400" />
-          <span className="font-semibold">
-            {project.average_rating.toFixed(1)}
-          </span>
+          <span className="font-semibold">{project.average_rating.toFixed(1)}</span>
           <div>{project.total_votes} vote(s)</div>
           <div className="flex items-center space-x-1">
             <MessageCircle className="w-5 h-5" />
             <span>{project.comments_count}</span>
           </div>
-          {project.average_rating > 0 && (
-            <Trophy className="w-5 h-5 text-yellow-500" />
-          )}
+          {project.average_rating > 0 && <Trophy className="w-5 h-5 text-yellow-500" />}
         </div>
         <Button
           className={`mt-2 ${
@@ -450,11 +400,9 @@ function ProjectListItem({
           onClick={onEvaluate}
           size="sm"
         >
-          {VoteSecurityManager.hasUserVoted(project.id)
-            ? "Modifier mon vote"
-            : "Évaluer"}
+          {VoteSecurityManager.hasUserVoted(project.id) ? "Modifier mon vote" : "Évaluer"}
         </Button>
       </div>
     </div>
-  );
+  )
 }
