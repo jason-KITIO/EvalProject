@@ -8,6 +8,7 @@ import {
   Shield,
   Zap,
   Globe,
+  BookOpen,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -38,11 +39,8 @@ export default function LandingPage() {
             >
               Comment ça marche
             </Link>
-            <Link
-              href="#Testimonials"
-              className="text-gray-600 hover:text-gray-900"
-            >
-              Testimonials
+            <Link href="/guide" className="text-gray-600 hover:text-gray-900">
+              Guide d'utilisation
             </Link>
           </nav>
           <div className="flex items-center space-x-4">
@@ -86,13 +84,16 @@ export default function LandingPage() {
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-gray-300 px-8 py-3 bg-transparent"
-              >
-                Voir la démo
-              </Button>
+              <Link href="/guide">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-gray-300 px-8 py-3 bg-transparent"
+                >
+                  <BookOpen className="mr-2 w-5 h-5" />
+                  Voir le guide
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -106,7 +107,7 @@ export default function LandingPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gray-50">
+      {/* <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
@@ -123,7 +124,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Features Section */}
       <section id="features" className="py-20 px-4">
@@ -291,15 +292,12 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="Testimonials" className="py-20 px-4">
+      {/* <section className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Ce que disent nos utilisateurs
-            </h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Ce que disent nos utilisateurs</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Découvrez les témoignages des universités qui utilisent déjà notre
-              plateforme
+              Découvrez les témoignages des universités qui utilisent déjà notre plateforme
             </p>
           </div>
 
@@ -308,16 +306,12 @@ export default function LandingPage() {
               <CardContent className="p-0">
                 <div className="flex items-center mb-4">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className="w-5 h-5 text-yellow-400 fill-current"
-                    />
+                    <Star key={star} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
                 <p className="text-gray-600 mb-4">
-                  "Cette plateforme a révolutionné notre processus d'évaluation.
-                  Les étudiants apprécient la transparence et nous gagnons un
-                  temps précieux."
+                  "Cette plateforme a révolutionné notre processus d'évaluation. Les étudiants apprécient la
+                  transparence et nous gagnons un temps précieux."
                 </p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-[#E2FB6C] rounded-full flex items-center justify-center mr-3">
@@ -325,9 +319,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <div className="font-semibold">Dr. Marie Dubois</div>
-                    <div className="text-sm text-gray-500">
-                      Université de Lyon
-                    </div>
+                    <div className="text-sm text-gray-500">Université de Lyon</div>
                   </div>
                 </div>
               </CardContent>
@@ -337,16 +329,12 @@ export default function LandingPage() {
               <CardContent className="p-0">
                 <div className="flex items-center mb-4">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className="w-5 h-5 text-yellow-400 fill-current"
-                    />
+                    <Star key={star} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
                 <p className="text-gray-600 mb-4">
-                  "L'interface est intuitive et le système de notation anonyme
-                  garantit l'objectivité. Nos soutenances sont maintenant plus
-                  équitables."
+                  "L'interface est intuitive et le système de notation anonyme garantit l'objectivité. Nos soutenances
+                  sont maintenant plus équitables."
                 </p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-[#E2FB6C] rounded-full flex items-center justify-center mr-3">
@@ -354,9 +342,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <div className="font-semibold">Prof. Pierre Leclerc</div>
-                    <div className="text-sm text-gray-500">
-                      École Polytechnique
-                    </div>
+                    <div className="text-sm text-gray-500">École Polytechnique</div>
                   </div>
                 </div>
               </CardContent>
@@ -366,15 +352,12 @@ export default function LandingPage() {
               <CardContent className="p-0">
                 <div className="flex items-center mb-4">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className="w-5 h-5 text-yellow-400 fill-current"
-                    />
+                    <Star key={star} className="w-5 h-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
                 <p className="text-gray-600 mb-4">
-                  "L'export des données nous permet d'analyser facilement les
-                  tendances. Un outil indispensable pour notre département."
+                  "L'export des données nous permet d'analyser facilement les tendances. Un outil indispensable pour
+                  notre département."
                 </p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-[#E2FB6C] rounded-full flex items-center justify-center mr-3">
@@ -382,16 +365,14 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <div className="font-semibold">Dr. Anne Martin</div>
-                    <div className="text-sm text-gray-500">
-                      Université de Bordeaux
-                    </div>
+                    <div className="text-sm text-gray-500">Université de Bordeaux</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-20 bg-[#004838] text-white">
@@ -410,6 +391,15 @@ export default function LandingPage() {
                 className="bg-[#E2FB6C] text-[#004838] hover:bg-[#E2FB6C]/90 px-8 py-3"
               >
                 Commencer gratuitement
+              </Button>
+            </Link>
+            <Link href="/admin/register">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-[#004838] px-8 py-3 bg-transparent"
+              >
+                Créer un compte admin
               </Button>
             </Link>
           </div>
